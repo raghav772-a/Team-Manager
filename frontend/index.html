@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TManager — Team Task Manager</title>
+  <meta name="description" content="Premium team productivity platform"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-bg">
+    <div class="login-bg-orb"></div>
+    <div class="login-bg-orb"></div>
+    <div class="login-bg-orb"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="login-logo-text">TManager</span>
+    </div>
+    <div class="login-subtitle">Sign in to your workspace</div>
+    <div class="role-tabs">
+      <div class="role-tab active" data-role="admin" id="roleAdmin">👑 Admin</div>
+      <div class="role-tab" data-role="member" id="roleMember">👤 Member</div>
+    </div>
+    <div class="login-error" id="loginError">Invalid email or password</div>
+    <form class="login-form" id="loginForm" autocomplete="off">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="you@tmanager.io" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+    </form>
+    <div class="login-demo">
+      <span class="demo-chip" data-email="admin@tmanager.io" data-pass="admin123" data-role="admin">Demo Admin</span>
+      <span class="demo-chip" data-email="member@tmanager.io" data-pass="member123" data-role="member">Demo Member</span>
+    </div>
+    <div class="login-footer">Don't have an account? <a id="signupLink">Request access</a></div>
+  </div>
+</div>
+<div class="app" id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo"><div class="logo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="logo-text">TManager</span></div>
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" data-page="dashboard" href="#" id="nav-dashboard"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg></span><span class="nav-label">Dashboard</span></a>
+      <a class="nav-item" data-page="projects" href="#" id="nav-projects"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" stroke="currentColor" stroke-width="2"/></svg></span><span class="nav-label">Projects</span><span class="nav-badge">6</span></a>
+      <a class="nav-item" data-page="tasks" href="#" id="nav-tasks"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nav-label">Tasks</span><span class="nav-badge">20</span></a>
+      <a class="nav-item" data-page="team" href="#" id="nav-team"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nav-label">Team</span></a>
+      <div class="nav-section-label">Workspace</div>
+      <a class="nav-item" data-page="calendar" href="#" id="nav-calendar"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="nav-label">Calendar</span></a>
+      <a class="nav-item" data-page="activity" href="#" id="nav-activity"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nav-label">Activity</span></a>
+      <a class="nav-item" data-page="reports" href="#" id="nav-reports"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="nav-label">Reports</span></a>
+      <a class="nav-item" data-page="settings" href="#" id="nav-settings"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="2"/></svg></span><span class="nav-label">Settings</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle"><span class="theme-icon" id="themeIcon">🌙</span><span class="nav-label" id="themeLabel">Dark Mode</span></button>
+      <div class="profile-card"><div class="avatar avatar-md" style="background:linear-gradient(135deg,#BBA58F,#959D90)">AK</div><div class="profile-info"><div class="profile-name">Alex Kumar</div><div class="profile-role">Product Lead</div></div><button class="icon-btn" onclick="logout()" aria-label="Sign out" title="Sign out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    </div>
+  </aside>
+  <!-- MAIN -->
+  <main class="main" id="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <div class="page-title-wrap"><h1 class="page-title" id="pageTitle">Dashboard</h1><div class="breadcrumb">TManager / <span id="breadcrumbCurrent">Overview</span></div></div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-wrap"><svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input class="search-input" type="search" placeholder="Search tasks, projects…" id="globalSearch"/></div>
+        <button class="icon-btn topbar-btn" id="notifBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="notif-dot"></span></button>
+        <button class="btn btn-primary" id="newTaskBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> New Task</button>
+      </div>
+    </header>
+    <div class="page-content" id="pageContent"></div>
+  </main>
+</div>
+<!-- MODAL -->
+<div class="modal-overlay" id="taskModal">
+  <div class="modal-card">
+    <div class="modal-header"><h2 class="modal-title">Create New Task</h2><button class="icon-btn" id="closeModal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Task Title</label><input class="form-input" type="text" id="taskTitle" placeholder="e.g. Design onboarding flow"/></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Priority</label><select class="form-select" id="taskPriority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option><option value="urgent">Urgent</option></select></div><div class="form-group"><label class="form-label">Status</label><select class="form-select" id="taskStatus"><option value="pending">Pending</option><option value="in-progress">In Progress</option><option value="review">Review</option><option value="completed">Completed</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Project</label><select class="form-select" id="taskProject"><option>Brand Refresh</option><option>Mobile App v2</option><option>API Gateway</option><option>Analytics Dashboard</option></select></div><div class="form-group"><label class="form-label">Due Date</label><input class="form-input" type="date" id="taskDueDate"/></div></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="taskDescription" placeholder="Add details…" rows="3"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" id="cancelModal">Cancel</button><button class="btn btn-primary" id="saveTask">Create Task</button></div>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
